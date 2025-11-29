@@ -10,7 +10,7 @@ export default defineConfig({
                 'resources/css/career-job-post.css',
                 'resources/js/app.js'],
             refresh: [
-                'app/livewire/**'
+                'app/Livewire/**'
             ],
         }),
     ],
