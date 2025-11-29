@@ -20,7 +20,7 @@ class NewCandidatePortalAccountRegisteredNotification extends Notification
     public function __construct(Candidates $candidates)
     {
         $this->candidate = $candidates;
-        $this->candidate_loginLink = filament()->getPanel('candidate')->getLoginUrl();
+        $this->candidate_loginLink = filament()->getPanel('recruitiq-candidate')->getLoginUrl();
         $this->company_name = (new GeneralSetting())->company_name;
     }
 
@@ -38,7 +38,7 @@ class NewCandidatePortalAccountRegisteredNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Your Candidate Portal Account is Ready!')
+            ->subject('Your RecruitIQ Candidate Portal Account is Ready!')
             ->greeting("Dear {$this->candidate->LastName}")
             ->from(env('MAIL_FROM_ADDRESS'), $this->company_name)
             ->line('We\'re thrilled to inform you that your candidate portal account has been successfully created. Welcome to our platform! This email is to confirm the successful creation of your account using the invitation you received.')

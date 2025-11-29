@@ -25,7 +25,7 @@ class CandidatePanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->id('candidate')
+            ->id('recruitiq-candidate')
             ->path('portal/candidate')
             ->authGuard('candidate_web')
             ->authPasswordBroker('candidate_users')
@@ -36,6 +36,7 @@ class CandidatePanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Gray,
             ])
+            ->brandName('RecruitIQ')
             ->userMenuItems([
                 Navigation\MenuItem::make()
                     ->label('Account')

@@ -49,7 +49,7 @@ class WelcomeSystemUserNotification extends Notification
     {
         return (new MailMessage)
             ->from(env('MAIL_FROM_ADDRESS'), $this->company_name)
-            ->subject('Welcome to Our System - Verification & Registration Completed')
+            ->subject('Welcome to RecruitIQ - Verification & Registration Completed')
             ->greeting("Dear {$this->user->name},")
             ->line('We are pleased to inform you that your registration has been successfully completed, and your account is now fully active in our system.')
             ->line('You can now log in with your registered email address and the password you created during the registration process. If you ever forget your password, you can use the "Forgot Password" feature on the login page to reset it.')

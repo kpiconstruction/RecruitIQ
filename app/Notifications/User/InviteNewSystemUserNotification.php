@@ -46,7 +46,7 @@ class InviteNewSystemUserNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Welcome to our System - Complete Your Registration')
+            ->subject('Welcome to RecruitIQ - Complete Your Registration')
             ->from(env('MAIL_FROM_ADDRESS'), $this->companyName)
             ->greeting("Dear {$this->user->name},")
             ->line('We are delighted to welcome you to our system! To complete your registration and ensure the security of your account, please follow these simple steps:')

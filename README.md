@@ -1,8 +1,8 @@
 :construction: This project is under hard development and not yet ready for production :construction:
-<p align="center"><img src="https://github.com/OSSAdmiral/.github/blob/c325ef79481c1b02d675f71247d4f8131d0496fa/Profile/Admiral%20(OSS)%20%20743x360.png" width="400" alt="Admiral OSS"></p>
+<p align="center"><strong>RecruitIQ</strong></p>
 
 [![Laravel](https://img.shields.io/badge/Laravel-v10-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://img.shields.io/badge/Laravel-v10-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
-[![PHP](https://img.shields.io/badge/PHP-v8.1-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://img.shields.io/badge/PHP-v8.1-777BB4?style=for-the-badge&logo=php&logoColor=white)
+[![PHP](https://img.shields.io/badge/PHP-v8.2-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://img.shields.io/badge/PHP-v8.2-777BB4?style=for-the-badge&logo=php&logoColor=white)
 [![FilamentPhp ](https://img.shields.io/badge/Filamentphp-v3.x-yellow?style=for-the-badge&logo=filamentphp)](https://img.shields.io/badge/PHP-8.0-777BB4?style=for-the-badge&logo=php)
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/RecruitLab/Recruit/run-tests.yml?style=for-the-badge&logo=GitHub&label=Test%20Case)
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/RecruitLab/Recruit/fix-php-code-style-issues.yml?event=pull_request&style=for-the-badge&logo=GitHub&label=Code%20Style)
@@ -11,11 +11,11 @@
 
 # Introduction
 
-Welcome to "Recruit," your innovative open-source system designed to streamline and optimize the talent acquisition process. With Recruit, you can effortlessly manage every aspect of your recruitment efforts, from posting job openings to evaluating candidates and making data-driven decisions. Say goodbye to the complexities of recruitment and embrace a simpler, more efficient solution that empowers your organization to build a top-notch team. Get ready to revolutionize your recruitment strategy with Recruit!
+RecruitIQ is an in-house recruitment platform for traffic/labour-hire companies. It streamlines job postings, candidate applications, and hiring workflows across an admin panel, candidate portal, and public career site.
 
-# Official Documentation
+# Documentation
 
-Documentation can be found in [OSSAdmiral-Recruit](https://oss-admiral.gitbook.io/ossadmiral-recruit/)
+Internal documentation is maintained separately.
 
 # Installation
 
@@ -107,13 +107,13 @@ password
 
 <a href="https://discord.gg/RK6mDerFjs"> <img src="https://discord.com/api/guilds/1165859974086393916/widget.png?style=banner4" /></a>
 
-## About OSSAdmiral-Recruit
+## About RecruitIQ
 
-OSSAdmiral-Recruit is a web application System with rich feature.
+RecruitIQ is a web application with a rich feature set for recruitment operations.
 
 ## Contributing
 
-Thank you for considering contributing to the OSSAdmiral-Recruit.
+Thank you for considering contributing to RecruitIQ.
 
 ## Code of Conduct
 
@@ -125,4 +125,4 @@ If you discover a security vulnerability within Laravel, please send an e-mail u
 
 ## License
 
-The OSSAdmiral-Recruit  is open-sourced software licensed under the [GNU AGPLv3](https://choosealicense.com/licenses/agpl-3.0/).
+RecruitIQ is open-sourced software licensed under the [GNU AGPLv3](https://choosealicense.com/licenses/agpl-3.0/).

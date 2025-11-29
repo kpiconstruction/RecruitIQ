@@ -27,13 +27,13 @@ class CareerLandingPage extends Component
 
         if (session()->has('password_hash_candidate_web')) {
             Notification::make()
-                ->body('Login to your candidate portal for applying to experience 5sec job apply.')
+                ->body('Log in to your RecruitIQ candidate portal to apply quickly.')
                 ->icon('heroicon-o-exclamation-triangle')
                 ->actions([
                     Action::make('view')
                         ->color('success')
-                        ->label('Redirect to my Portal')
-                        ->url(filament()->getPanel('candidate')->getLoginUrl())
+                        ->label('Go to Candidate Portal')
+                        ->url(filament()->getPanel('recruitiq-candidate')->getLoginUrl())
                         ->button(),
                 ])
                 ->warning()

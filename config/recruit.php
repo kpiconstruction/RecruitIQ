@@ -11,7 +11,7 @@ return [
     'enable_captcha' => true,
     'captcha_provider' => [
         // Applicable value will be the provider name from the "Captcha Provider"
-        'default' => 'Recruit_Captcha',
+        'default' => 'Cloudflare',
         'Google' => [
             'provider_name' => 'Google',
         ],

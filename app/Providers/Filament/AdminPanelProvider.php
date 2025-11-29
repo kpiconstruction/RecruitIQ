@@ -37,13 +37,14 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->maxContentWidth('full')
-            ->id('recruit')
+            ->id('recruitiq')
             ->path('')
             ->passwordReset()
             ->authGuard('web')
             ->authPasswordBroker('users')
             ->emailVerification()
             ->login()
+            ->brandName('RecruitIQ')
             ->renderHook('panels::auth.login.form.before',
                 fn (): View => view('filament.pages.auth.login')
             )

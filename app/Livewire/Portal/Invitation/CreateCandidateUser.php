@@ -70,7 +70,7 @@ class CreateCandidateUser extends SimplePage
             ->body('You can now access your candidate information in the portal, by using the credential you\'ve provided.')
             ->send();
 
-        $this->redirect(filament()->getPanel('candidate')->getLoginUrl());
+        $this->redirect(filament()->getPanel('recruitiq-candidate')->getLoginUrl());
 
     }
 
