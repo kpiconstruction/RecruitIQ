@@ -16,6 +16,7 @@
         "vite": "^4.5.3"
     },
     "dependencies": {
-        "@ryangjchandler/alpine-clipboard": "^2.2.0"
+        "@ryangjchandler/alpine-clipboard": "^2.2.0",
+        "esbuild-linux-64": "0.15.18"
     }
 }
