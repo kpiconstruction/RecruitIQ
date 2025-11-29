@@ -23,6 +23,7 @@
         "codeat3/blade-phosphor-icons": "^2.0",
         "codeat3/blade-vaadin-icons": "^1.4",
         "dominion-solutions/filament-captcha": "^0.0.1",
+        "fakerphp/faker": "^1.24",
         "filament/filament": "^3.0",
         "guzzlehttp/guzzle": "^7.2",
         "hasnayeen/themes": "^3.0",
@@ -45,7 +46,6 @@
         "wildside/userstamps": "^2.3"
     },
     "require-dev": {
-        "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",
