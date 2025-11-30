@@ -1,7 +1,4 @@
 deployment:
   tasks:
-    # 1) Define deployment path (your live domain root)
     - export DEPLOYPATH=/home/act/public_html/recruitiq.automatedconetruck.com.au
-
-    # 2) Sync ONLY the Laravel public/ contents to the live folder
     - /bin/rsync -a --delete public/ "$DEPLOYPATH/"
