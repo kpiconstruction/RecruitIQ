@@ -8,6 +8,7 @@ use App\Filament\Enums\JobCandidateStatus;
 use App\Models\Candidates;
 use App\Models\JobCandidates;
 use App\Models\JobOpenings;
+use App\Models\Referrals;
 use DominionSolutions\FilamentCaptcha\Forms\Components\Captcha;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
@@ -83,13 +84,18 @@ class CareerApplyJob extends Component implements HasActions, HasForms
             'CurrentJobTitle' => $data['CurrentJobTitle'],
             'School' => $data['School'],
             'ExperienceDetails' => $data['ExperienceDetails'],
+            'GovReportingTags' => $data['GovReportingTags'] ?? [],
+            'EmergencyContacts' => $data['EmergencyContacts'] ?? [],
+            'EmploymentHistory' => $data['EmploymentHistory'] ?? [],
+            'RightToWorkAUNZ' => $data['RightToWorkAUNZ'] ?? null,
+            'OtherLanguages' => $data['OtherLanguages'] ?? null,
         ]);
 
         // Job Candidates
         $job_candidates = JobCandidates::create([
             'JobId' => $this->record->id,
             'CandidateSource' => 'Career Page',
-            'CandidateStatus' => JobCandidateStatus::New,
+            'CandidateStatus' => (($data['RightToWorkAUNZ'] ?? 'Yes') === 'No') ? JobCandidateStatus::Rejected : JobCandidateStatus::New,
             'candidate' => $candidate->id,
             'mobile' => $data['mobile'],
             'Email' => $data['Email'],
@@ -104,6 +110,19 @@ class CareerApplyJob extends Component implements HasActions, HasForms
         ]);
 
         if ($candidate && $job_candidates) {
+            if (! empty($data['Referees']) && is_array($data['Referees'])) {
+                foreach ($data['Referees'] as $ref) {
+                    Referrals::create([
+                        'ReferringJob' => $this->record->id,
+                        'JobCandidate' => $job_candidates->id,
+                        'Candidate' => $candidate->id,
+                        'ReferredBy' => $ref['referee_name'] ?? null,
+                        'Relationship' => $ref['known_relation'] ?? null,
+                        'KnownPeriod' => $ref['known_period'] ?? null,
+                        'Notes' => trim(((($ref['organisation'] ?? '') !== '' ? ($ref['organisation'].'; ') : '')).(($ref['position'] ?? '') !== '' ? ('Pos: '.$ref['position'].'; ') : '').(($ref['phone_type'] ?? '') !== '' ? ('Type: '.$ref['phone_type'].'; ') : '').(($ref['phone'] ?? '') !== '' ? ('Phone: '.$ref['phone'].'; ') : '').(($ref['email'] ?? '') !== '' ? ('Email: '.$ref['email']) : '')),
+                    ]);
+                }
+            }
             Notification::make()
                 ->title('Application submitted!')
                 ->success()
@@ -201,6 +220,28 @@ class CareerApplyJob extends Component implements HasActions, HasForms
                             ])
                             ->label('Experience'),
                     ]),
+                Forms\Components\Section::make('Employment History Details')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\TextInput::make('ApplyingForPosition')
+                            ->label('What position are you applying for?')
+                            ->default(fn () => self::$jobDetails?->JobTitle ?? self::$jobDetails?->postingTitle ?? '')
+                            ->disabled(),
+                        Forms\Components\Repeater::make('EmploymentHistory')
+                            ->label('Previous Employment History')
+                            ->minItems(1)
+                            ->schema([
+                                Forms\Components\TextInput::make('employer')->required()->label('Employer'),
+                                Forms\Components\TextInput::make('position')->required()->label('Position'),
+                                Forms\Components\DatePicker::make('date_start')->required()->label('Dates Employed Start'),
+                                Forms\Components\DatePicker::make('date_end')->required()->label('Dates Employed End'),
+                                Forms\Components\TextInput::make('reason_leaving')->label('Reason for Leaving'),
+                                Forms\Components\Textarea::make('key_duties')->required()->label('Key duties performed'),
+                            ])
+                            ->columns(2)
+                            ->addActionLabel('Add Employment')
+                            ->deletable(true),
+                    ]),
                 Forms\Components\Section::make('Educational Details')
                     ->schema([
                         Forms\Components\Repeater::make('School')
@@ -239,6 +280,102 @@ class CareerApplyJob extends Component implements HasActions, HasForms
                             ])
                             ->deletable(true)
                             ->columns(5),
+                    ]),
+                Forms\Components\Section::make('Emergency Contact Details')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\Repeater::make('EmergencyContacts')
+                            ->label('Please list the details of at least one emergency contact who can be contacted in case of emergency.')
+                            ->minItems(1)
+                            ->schema([
+                                Forms\Components\TextInput::make('first_name')->required()->label('First Name'),
+                                Forms\Components\TextInput::make('last_name')->required()->label('Last Name'),
+                                Forms\Components\TextInput::make('relationship')->required()->label('Relationship'),
+                                Forms\Components\TextInput::make('mobile')->required()->label('Mobile Number'),
+                                Forms\Components\TextInput::make('home')->label('Home Number'),
+                                Forms\Components\Fieldset::make('Address')
+                                    ->columns(2)
+                                    ->schema([
+                                        Forms\Components\TextInput::make('street')->label('Street'),
+                                        Forms\Components\TextInput::make('city')->label('City'),
+                                        Forms\Components\TextInput::make('state')->label('State'),
+                                        Forms\Components\TextInput::make('postcode')->label('Postcode'),
+                                        Forms\Components\TextInput::make('country')->label('Country'),
+                                    ]),
+                            ])
+                            ->columns(2)
+                            ->addActionLabel('Add Emergency Contact')
+                            ->deletable(true),
+                    ]),
+                Forms\Components\Section::make('Right to Work Details')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\Radio::make('RightToWorkAUNZ')
+                            ->label('Are you an Australian or New Zealand Permanent Resident or Citizen?')
+                            ->options(['Yes' => 'Yes', 'No' => 'No'])
+                            ->required(),
+                    ]),
+                Forms\Components\Section::make('Language')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\Radio::make('SpeakMoreThanOneLanguage')
+                            ->label('Do you speak more than one language')
+                            ->options(['Yes' => 'Yes', 'No' => 'No'])
+                            ->required(),
+                        Forms\Components\Textarea::make('OtherLanguages')
+                            ->label('Languages spoken other than English')
+                            ->visible(fn (callable $get) => $get('SpeakMoreThanOneLanguage') === 'Yes'),
+                    ]),
+                Forms\Components\Section::make('Referee Details')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\Repeater::make('Referees')
+                            ->label('Please list the details of at least two referees who can be contacted to provide either employment or character references.')
+                            ->minItems(2)
+                            ->schema([
+                                Forms\Components\TextInput::make('referee_name')->required()->label('Referee Name'),
+                                Forms\Components\TextInput::make('organisation')->required()->label('Organisation'),
+                                Forms\Components\TextInput::make('position')->label('Referee Position'),
+                                Forms\Components\TextInput::make('phone')->required()->label('Referee Phone'),
+                                Forms\Components\Select::make('phone_type')->options(['Mobile' => 'Mobile', 'Landline' => 'Landline'])->required()->label('Phone Type'),
+                                Forms\Components\TextInput::make('email')->label('Referee Email')->email(),
+                                Forms\Components\TextInput::make('known_relation')->required()->label('How is this person known to you?'),
+                                Forms\Components\TextInput::make('known_period')->label('Known period'),
+                            ])
+                            ->columns(2)
+                            ->addActionLabel('Add Referee')
+                            ->deletable(true),
+                    ]),
+                Forms\Components\Section::make('Compliance & Reporting')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\Select::make('GovReportingTags')
+                            ->label('To assist with client and Government reporting, please advise if any of the following apply to you. (Select all that apply).')
+                            ->multiple()
+                            ->preload()
+                            ->options([
+                                'None' => 'None',
+                                'Asylum seeker' => 'Asylum seeker',
+                                'Culturally and Linguistically Diverse' => 'Culturally and Linguistically Diverse',
+                                'Department of justice client or criminal record' => 'Department of justice client or criminal record',
+                                'Disadvantaged postcode' => 'Disadvantaged postcode',
+                                'Disadvantaged youth' => 'Disadvantaged youth',
+                                'Disengaged youth for 6 months' => 'Disengaged youth for 6 months',
+                                'Indigenous Person' => 'Indigenous Person',
+                                'International student' => 'International student',
+                                'LGBTQI+' => 'LGBTQI+',
+                                'Long-term unemployed' => 'Long-term unemployed',
+                                'Migrant without employment within 6 months' => 'Migrant without employment within 6 months',
+                                'New migrant' => 'New migrant',
+                                'Refugee' => 'Refugee',
+                                'Retrenched due to COVID-19' => 'Retrenched due to COVID-19',
+                                'Retrenched/Ex-automotive worker' => 'Retrenched/Ex-automotive worker',
+                                'Single parent' => 'Single parent',
+                                'Social or Economic Person at Risk' => 'Social or Economic Person at Risk',
+                                'Veteran' => 'Veteran',
+                                'Working with a disability' => 'Working with a disability',
+                            ])
+                            ->required(),
                     ]),
                 Forms\Components\FileUpload::make('attachment')
                     ->preserveFilenames()

@@ -38,7 +38,6 @@
                         <div class="c1id5 cw23l cehj8 cmgzk text-white">
                             <div class="mb-6 flex items-center gap-4">
                                 <img src="{{ asset('images/RECRUITIQ-LOGO.png') }}" alt="RecruitIQ" class="h-12">
-                                <img src="{{ asset('images/KPI-LOGO.png') }}" alt="KPI Construction Services" class="h-8">
                             </div>
                             <div class="clxxf cnvur cgr2r">
                                 <h1 class="c80vv cmux8 c4q7l">Join Our Team</h1>

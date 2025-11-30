@@ -39,6 +39,11 @@ class Candidates extends Model
         'CandidateOwner',
         'School',
         'ExperienceDetails',
+        'GovReportingTags',
+        'EmergencyContacts',
+        'EmploymentHistory',
+        'RightToWorkAUNZ',
+        'OtherLanguages',
     ];
 
     public function attachments(): HasMany
@@ -63,5 +68,8 @@ class Candidates extends Model
         'ExperienceDetails' => 'array',
         'School' => 'array',
         'SkillSet' => 'array',
+        'GovReportingTags' => 'array',
+        'EmergencyContacts' => 'array',
+        'EmploymentHistory' => 'array',
     ];
 }

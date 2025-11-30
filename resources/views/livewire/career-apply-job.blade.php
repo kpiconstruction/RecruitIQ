@@ -45,7 +45,6 @@
                         <div class="c9zbf cfacu c0spu cnm0k py-10">
                             <div class="flex items-center gap-4 text-white">
                                 <img src="{{ asset('images/RECRUITIQ-LOGO.png') }}" alt="RecruitIQ" class="h-10">
-                                <img src="{{ asset('images/KPI-LOGO.png') }}" alt="KPI Construction Services" class="h-8">
                             </div>
                             <h1 class="c5zpx c9gkl c8hbn cn95v text-white mt-4">Apply to {{$jobDetail?->postingTitle}}</h1>
                         </div>
