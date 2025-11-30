@@ -41,8 +41,12 @@
                                 <img src="{{ asset('images/KPI-LOGO.png') }}" alt="KPI Construction Services" class="h-8">
                             </div>
                             <div class="clxxf cnvur cgr2r">
-                                <h1 class="c80vv cmux8 c4q7l">Work with KPI RecruitIQ</h1>
-                                <p class="cfnbb ckpvk">Find roles across our traffic and construction teams. Browse openings and start your onboarding now.</p>
+                                <h1 class="c80vv cmux8 c4q7l">Join Our Team</h1>
+                                <div class="space-y-3">
+                                    <p class="cfnbb ckpvk">Securing meaningful work shouldn’t be a drawn-out process. We streamline the journey by giving you two clear pathways: apply for our current vacancies, or join our pre-approved workforce pool. Once you’re pre-approved, our team will fast-track you into suitable roles the moment they become available.</p>
+                                    <p class="cfnbb ckpvk">As one of Australia’s largest traffic management and labour providers, we offer consistent opportunities, strong career progression, and a high-performance environment where people want to be.</p>
+                                    <p class="cfnbb ckpvk">Start your journey with us today.</p>
+                                </div>
                             </div>
                         </div>
                     </div>

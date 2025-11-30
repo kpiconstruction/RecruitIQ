@@ -32,9 +32,12 @@ class CandidatePanelProvider extends PanelProvider
             ->passwordReset()
             ->emailVerification()
             ->login()
+            ->renderHook('panels::auth.login.form.before',
+                fn (): \Illuminate\Contracts\View\View => view('filament.pages.auth.login')
+            )
             ->maxContentWidth('full')
             ->colors([
-                'primary' => Color::Gray,
+                'primary' => Color::Teal,
             ])
             ->brandName('RecruitIQ')
             ->userMenuItems([
