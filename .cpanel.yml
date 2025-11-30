@@ -1,8 +1,19 @@
 ---
 deployment:
   tasks:
-    # 1) Set the correct deployment path (your domain root)
-    - export DEPLOYPATH=/home/act/public_html/recruitiq.automatedconetruck.com.au
+    # 1. Go to the app directory
+    - export APP_DIR=/home/act/repo/RecruitIQ
+    - cd $APP_DIR
 
-    # 2) Copy ONLY the contents of Laravel's /public into the domain root
-    - /bin/rsync -av --delete ./public/ "$DEPLOYPATH"
+    # 2. Take app offline (ignore if already down)
+    - php artisan down || true
+
+    # 3. Optimise caches (safe for every deployment)
+    - php artisan optimize || true
+
+    # 4. Bring the application back up
+    - php artisan up || true
+
+    # OPTIONAL: Enable later when you are ready
+    # - php artisan migrate --force || true
+
