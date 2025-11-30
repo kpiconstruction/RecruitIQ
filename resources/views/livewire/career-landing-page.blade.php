@@ -32,7 +32,7 @@
             </div>
         </header>
         <main class="cyy4k">
-            <section class="cpsdf c78an" style="background-image:url('{{ asset('images/BG-WORKERS.png') }}'); background-size:cover; background-position:center;">
+            <section class="cpsdf c78an" style="background-image:url('{{ asset('images/BG-WORKERS.png') }}'); background-size:cover; background-position:center; min-height: 420px;">
                 <div class="bg-black/50">
                     <div class="cscbh cyd7h cctbj c1dhf py-12">
                         <div class="c1id5 cw23l cehj8 cmgzk text-white">
@@ -48,6 +48,11 @@
                                     <p class="cfnbb ckpvk">Start your journey with us today.</p>
                                 </div>
                             </div>
+                        </div>
+                        <!-- Top links -->
+                        <div class="absolute right-8 top-6 flex gap-4">
+                            <a class="text-white underline" href="{{ filament()->getPanel('recruitiq-candidate')->getLoginUrl() }}">Sign in</a>
+                            <a class="text-white underline" href="{{ filament()->getPanel('recruitiq-candidate')->getRegistrationUrl() }}">Sign up</a>
                         </div>
                     </div>
                 </div>
