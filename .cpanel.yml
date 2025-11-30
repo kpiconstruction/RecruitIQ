@@ -1,28 +1,9 @@
 ---
 deployment:
   tasks:
-    # 1. Define and move into the application directory (your Git repo)
+    # 1. Go to the repo directory
     - export APP_DIR=/home/act/repo/RecruitIQ
     - cd $APP_DIR || exit 0
 
-    # 2. Use PHP 8.2 CLI (EasyApache). If this path ever changes,
-    #    you can check it in cPanel's "PHP" / "Cron" helper.
-    - export PHP_CLI=/usr/local/bin/ea-php82
-
-    # 3. Put the application into maintenance mode (non-fatal)
-    - $PHP_CLI artisan down || true
-
-    # 4. Clear caches (all non-fatal)
-    - $PHP_CLI artisan config:clear || true
-    - $PHP_CLI artisan route:clear || true
-    - $PHP_CLI artisan view:clear  || true
-    - $PHP_CLI artisan cache:clear || true
-
-    # 5. Rebuild optimized caches (non-fatal)
-    - $PHP_CLI artisan optimize || true
-
-    # 6. OPTIONAL: DB migrations when you're ready
-    # - $PHP_CLI artisan migrate --force || true
-
-    # 7. Bring the app back online (non-fatal)
-    - $PHP_CLI artisan up || true
+    # 2. Write a simple marker file so we know deploy ran
+    - echo "Deployed at $(date)" >> deploy-test.log || true
