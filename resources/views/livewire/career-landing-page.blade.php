@@ -32,20 +32,19 @@
             </div>
         </header>
         <main class="cyy4k">
-            <section class="cpsdf c78an">
-                <div class="cp8r2 c5u32 cdf7d cxio3 c0wb5 ch30j clp4d" aria-hidden="true"></div>
-                <div class="cscbh cyd7h cctbj c1dhf">
-                    <div class="c1id5 cw23l cehj8 cmgzk">
-                        <!-- Hero content -->
-                        <div class="clxxf cnvur cgr2r">
-                            <!-- Copy -->
-                            <h1 class="c80vv cmux8 c4q7l">Join with our team</h1>
-                            <p class="cfnbb ckpvk clvg0">We know that finding a meaningful and rewarding job can be a
-                                long journey. Our goal is to make that process as easy as possible for you, and to
-                                create a work environment that's satisfying - one where you'll look forward to coming to
-                                every day. Start your journey with us by browsing available jobs.</p>
+            <section class="cpsdf c78an" style="background-image:url('{{ asset('images/BG-WORKERS.png') }}'); background-size:cover; background-position:center;">
+                <div class="bg-black/50">
+                    <div class="cscbh cyd7h cctbj c1dhf py-12">
+                        <div class="c1id5 cw23l cehj8 cmgzk text-white">
+                            <div class="mb-6 flex items-center gap-4">
+                                <img src="{{ asset('images/RECRUITIQ-LOGO.png') }}" alt="RecruitIQ" class="h-12">
+                                <img src="{{ asset('images/KPI-LOGO.png') }}" alt="KPI Construction Services" class="h-8">
+                            </div>
+                            <div class="clxxf cnvur cgr2r">
+                                <h1 class="c80vv cmux8 c4q7l">Work with KPI RecruitIQ</h1>
+                                <p class="cfnbb ckpvk">Find roles across our traffic and construction teams. Browse openings and start your onboarding now.</p>
+                            </div>
                         </div>
-
                     </div>
                 </div>
             </section>
