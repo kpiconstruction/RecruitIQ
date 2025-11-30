@@ -1,9 +1,7 @@
----
 deployment:
   tasks:
-    # 1. Go to the repo directory
-    - export APP_DIR=/home/act/repo/RecruitIQ
-    - cd $APP_DIR || exit 0
+    # 1) Define deployment path (your live domain root)
+    - export DEPLOYPATH=/home/act/public_html/recruitiq.automatedconetruck.com.au
 
-    # 2. Write a simple marker file so we know deploy ran
-    - echo "Deployed at $(date)" >> deploy-test.log || true
+    # 2) Sync ONLY the Laravel public/ contents to the live folder
+    - /bin/rsync -a --delete public/ "$DEPLOYPATH/"
