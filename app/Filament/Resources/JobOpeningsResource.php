@@ -14,6 +14,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
@@ -138,6 +139,12 @@ class JobOpeningsResource extends Resource
                             ->hintIcon('heroicon-o-information-circle', tooltip: 'This field will display in the career job portal')
                             ->label('Additional Notes')
                             ->nullable(),
+                        FileUpload::make('AdvertImage')
+                            ->label('Advert Image')
+                            ->image()
+                            ->directory('job-openings')
+                            ->visibility('public')
+                            ->maxSize(4096),
                     ])->columns(1),
                 Section::make('System Information')
                     ->hiddenOn(['create', 'edit'])

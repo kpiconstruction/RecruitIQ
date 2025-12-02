@@ -127,26 +127,29 @@
                                     <div class="crp1m cj2th">
                                         <!-- Item -->
                                         @forelse($jobLists as $jobs)
-                                            {{--<!-- Item -->--}}
                                             <div class="clyea c9l7w cq3a6 cesvj">
                                                 <div class="cnm0k cwi2m">
                                                     <div class="cqho4 cttum cnq6h cfv99 c1jf4">
                                                         <div class="c8c54 cqho4 c1ls3 c4nmh cfzi6 cvz5l cxdqm">
-                                                            <div>
-                                                                <div class="cknhg font-bold">
-                                                                    <a class="cbde7 c89yv c8tys" href="{{route('career.job_details', [$jobs['JobOpeningSystemID']])}}">{{$jobs['postingTitle']}}</a>
+                                                            <div class="flex items-start gap-4">
+                                                                @if(isset($jobs['AdvertImage']) && $jobs['AdvertImage'])
+                                                                    <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($jobs['AdvertImage']) }}" alt="{{ $jobs['postingTitle'] }}" class="h-20 w-20 object-cover rounded-md">
+                                                                @endif
+                                                                <div>
+                                                                    <div class="cknhg font-bold">
+                                                                        <a class="cbde7 c89yv c8tys" href="{{route('career.job_details', [$jobs['JobOpeningSystemID']])}}">{{$jobs['postingTitle']}}</a>
+                                                                    </div>
+                                                                    <div class="italic font-thin ">
+                                                                        <p class="clvg0 text-xs mb-5">{{\Illuminate\Support\Str::limit($jobs['JobDescription'], 200)}}</p>
+                                                                    </div>
+                                                                    <div class="cvrk3">
+                                                                        <p class="cwu8g c00re cx250 ckpu6 csdzj c7x38 cobkt cesao crqt4 cdfls cdo22 chdfx ct9wm cebbr">💰 {{$jobs['Salary']}}</p>
+                                                                        <p class="cwu8g c00re cx250 ckpu6 csdzj c7x38 cobkt cesao crqt4 cdfls cdo22 chdfx ct9wm cebbr">💼 {{$jobs['JobType']}}</p>
+                                                                        <p class="cwu8g c00re cx250 ckpu6 csdzj c7x38 cobkt cesao crqt4 cdfls cdo22 chdfx ct9wm cebbr">
+                                                                            {{$jobs['RemoteJob'] === 1 ? '🌎 Remote' : '🏢 On-site'}}
+                                                                            </p>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="italic font-thin ">
-                                                                    <p class="clvg0 text-xs mb-5">{{\Illuminate\Support\Str::limit($jobs['JobDescription'], 200)}}</p>
-                                                                </div>
-                                                                <div class="cvrk3">
-                                                                    <p class="cwu8g c00re cx250 ckpu6 csdzj c7x38 cobkt cesao crqt4 cdfls cdo22 chdfx ct9wm cebbr">💰 {{$jobs['Salary']}}</p>
-                                                                    <p class="cwu8g c00re cx250 ckpu6 csdzj c7x38 cobkt cesao crqt4 cdfls cdo22 chdfx ct9wm cebbr">💼 {{$jobs['JobType']}}</p>
-                                                                    <p class="cwu8g c00re cx250 ckpu6 csdzj c7x38 cobkt cesao crqt4 cdfls cdo22 chdfx ct9wm cebbr">
-                                                                        {{$jobs['RemoteJob'] === 1 ? '🌎 Remote' : '🏢 On-site'}}
-                                                                        </p>
-                                                                </div>
-                                                            </div>
                                                             <div class="csqne c2kp1 cqho4 cn13m ctc7o ckjlt">
                                                                 <div class="cguey czwdx">
                                                                     <a class="cmqi9 comj7 cr309 cebq5 c3fma cfkyn ch5p0 cq3a6" href="{{route('career.job_apply', [$jobs['JobOpeningSystemID']])}}">

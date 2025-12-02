@@ -32,13 +32,9 @@ return [
             'management' => 'Management',
         ],
         'job_type_options' => [
+            'Casual' => 'Casual',
             'Full Time' => 'Full Time',
             'Part Time' => 'Part Time',
-            'Freelance' => 'Freelance',
-            'Temporary' => 'Temporary',
-            'Contract' => 'Contract',
-            'Permanent' => 'Permanent',
-            'Volunteer' => 'Volunteer',
         ],
         'work_experience' => [
             'refresher' => 'Refresher',

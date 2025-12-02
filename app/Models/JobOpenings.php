@@ -43,6 +43,7 @@ class JobOpenings extends Model
         'State',
         'ZipCode',
         'RemoteJob',
+        'AdvertImage',
         'published_career_site',
         'CreatedBy',
         'ModifiedBy',

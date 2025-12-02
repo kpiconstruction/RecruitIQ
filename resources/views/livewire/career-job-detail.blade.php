@@ -39,7 +39,7 @@
 
         <!-- Page content -->
         <main class="c8c54">
-            <section class="cpsdf c78an" style="background-image:url('{{ asset('images/BG-HIGHWAY.png') }}'); background-size:cover; background-position:center; min-height: 320px;">
+            <section class="cpsdf c78an" style="background-image:url('{{ $jobDetails->AdvertImage ? \Illuminate\Support\Facades\Storage::disk('public')->url($jobDetails->AdvertImage) : asset('images/BG-HIGHWAY.png') }}'); background-size:cover; background-position:center; min-height: 320px;">
                 <div class="bg-black/50">
                     <div class="c9zbf cfacu c0spu cnm0k py-10">
                         <div class="flex items-center gap-4 text-white">
