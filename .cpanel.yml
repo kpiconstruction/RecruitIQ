@@ -1,4 +1,9 @@
 deployment:
   tasks:
+    - export APPROOT=/home/act/repo/RecruitIQ
     - export DEPLOYPATH=/home/act/public_html/recruitiq.automatedconetruck.com.au
-    - /bin/rsync -a --delete public/ "$DEPLOYPATH/"
+    - /usr/bin/rsync -a --delete "$APPROOT/public/" "$DEPLOYPATH/"
+    - /usr/bin/php "$APPROOT/artisan" optimize:clear
+    - /usr/bin/php "$APPROOT/artisan" config:cache
+    - /usr/bin/php "$APPROOT/artisan" route:cache
+    - /usr/bin/php "$APPROOT/artisan" view:clear
