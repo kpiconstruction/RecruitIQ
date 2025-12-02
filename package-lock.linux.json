@@ -5,7 +5,8 @@
     "packages": {
         "": {
             "dependencies": {
-                "@ryangjchandler/alpine-clipboard": "^2.2.0"
+                "@ryangjchandler/alpine-clipboard": "^2.2.0",
+                "esbuild-linux-64": "0.15.18"
             },
             "devDependencies": {
                 "@tailwindcss/forms": "^0.5.6",
@@ -919,6 +920,21 @@
                 "@esbuild/win32-arm64": "0.18.20",
                 "@esbuild/win32-ia32": "0.18.20",
                 "@esbuild/win32-x64": "0.18.20"
+            }
+        },
+        "node_modules/esbuild-linux-64": {
+            "version": "0.15.18",
+            "resolved": "https://registry.npmjs.org/esbuild-linux-64/-/esbuild-linux-64-0.15.18.tgz",
+            "integrity": "sha512-hNSeP97IviD7oxLKFuii5sDPJ+QHeiFTFLoLm7NZQligur8poNOWGIgpQ7Qf8Balb69hptMZzyOBIPtY09GZYw==",
+            "cpu": [
+                "x64"
+            ],
+            "license": "MIT",
+            "os": [
+                "linux"
+            ],
+            "engines": {
+                "node": ">=12"
             }
         },
         "node_modules/escalade": {

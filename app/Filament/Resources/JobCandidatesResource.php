@@ -35,7 +35,8 @@ class JobCandidatesResource extends Resource
                     self::candidatePipelineFormLayout(),
                     self::candidateBasicInformationFormLayout(),
                     self::candidateCurrentJobInformationFormLayout(),
-                    self::candidateAddressInformationFormLayout()
+                    self::candidateAddressInformationFormLayout(),
+                    self::candidateHealthAndDeclarationsFormLayout()
                 ));
     }
 
@@ -133,6 +134,41 @@ class JobCandidatesResource extends Resource
         ];
     }
 
+    public static function candidateHealthAndDeclarationsFormLayout(): array
+    {
+        return [
+            Forms\Components\Section::make('Health & Declarations')
+                ->schema([
+                    Forms\Components\Fieldset::make('Criminal History')
+                        ->schema([
+                            Forms\Components\TextInput::make('CriminalHistory'),
+                            Forms\Components\Textarea::make('CriminalDetails'),
+                        ])->columns(1),
+                    Forms\Components\Fieldset::make('Declaration')
+                        ->schema([
+                            Forms\Components\Toggle::make('DeclarationAccepted'),
+                            Forms\Components\TextInput::make('SignatureName'),
+                            Forms\Components\TextInput::make('SignatureIP')->disabled(),
+                            Forms\Components\DateTimePicker::make('SignatureAt')->disabled(),
+                        ])->columns(2),
+                    Forms\Components\Fieldset::make('Pre-Employment Health Declaration')
+                        ->schema([
+                            Forms\Components\Select::make('HealthPreExistingCondition')->options(['Yes' => 'Yes', 'No' => 'No']),
+                            Forms\Components\Textarea::make('HealthPreExistingDetails'),
+                            Forms\Components\Select::make('HealthMedicationTreatment')->options(['Yes' => 'Yes', 'No' => 'No']),
+                            Forms\Components\Textarea::make('HealthMedicationDetails'),
+                            Forms\Components\Select::make('HealthOtherCircumstances')->options(['Yes' => 'Yes', 'No' => 'No']),
+                            Forms\Components\Textarea::make('HealthOtherDetails'),
+                            Forms\Components\Toggle::make('DrugAlcoholConsent'),
+                            Forms\Components\Toggle::make('HealthDeclarationAccepted'),
+                            Forms\Components\TextInput::make('HealthSignatureName'),
+                            Forms\Components\TextInput::make('HealthSignatureIP')->disabled(),
+                            Forms\Components\DateTimePicker::make('HealthSignatureAt')->disabled(),
+                        ])->columns(2),
+                ])->columns(2),
+        ];
+    }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -182,6 +218,23 @@ class JobCandidatesResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('HealthPreExistingCondition')
+                    ->label('Health Condition')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('HealthMedicationTreatment')
+                    ->label('Medication/Treatment')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('HealthOtherCircumstances')
+                    ->label('Other Circumstances')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\IconColumn::make('DrugAlcoholConsent')
+                    ->label('Drug & Alcohol Consent')
+                    ->boolean()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\IconColumn::make('HealthDeclarationAccepted')
+                    ->label('Health Declaration')
+                    ->boolean()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([

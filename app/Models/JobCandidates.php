@@ -44,6 +44,23 @@ class JobCandidates extends Model
         'CreatedBy',
         'ModifiedBy',
         'DeletedBy',
+        'CriminalHistory',
+        'CriminalDetails',
+        'DeclarationAccepted',
+        'SignatureName',
+        'SignatureAt',
+        'SignatureIP',
+        'HealthDeclarationAccepted',
+        'HealthSignatureName',
+        'HealthSignatureAt',
+        'HealthSignatureIP',
+        'HealthPreExistingCondition',
+        'HealthPreExistingDetails',
+        'HealthMedicationTreatment',
+        'HealthMedicationDetails',
+        'HealthOtherCircumstances',
+        'HealthOtherDetails',
+        'DrugAlcoholConsent',
     ];
 
     protected $casts = [
