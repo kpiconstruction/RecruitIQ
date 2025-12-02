@@ -3,14 +3,13 @@
 namespace App\Filament\Resources;
 
 use App\Models\JobOpeningTemplate;
-use Filament\Forms\Form;                      // ✅ this one
+use Filament\Forms\Components\RichEditor;                      // ✅ this one
 use Filament\Forms\Components\Section;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Table;
 
 class JobOpeningTemplateResource extends Resource
@@ -42,6 +41,7 @@ class JobOpeningTemplateResource extends Resource
                         ->options(config('recruit.job_opening.work_experience') ?? [])
                         ->native(false),
                     Select::make('RequiredSkill')
+                        ->label('Preferred Skills (internal)')
                         ->multiple()
                         ->options(config('recruit.job_opening.required_skill_options') ?? [])
                         ->native(false),

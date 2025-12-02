@@ -12,10 +12,10 @@ use App\Models\User;
 use App\Settings\JobOpeningSettings;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
@@ -60,11 +60,11 @@ class JobOpeningsResource extends Resource
                             ->options(JobOpeningTemplate::query()->pluck('name', 'id'))
                             ->reactive()
                             ->afterStateUpdated(function ($state, callable $set) {
-                                if (!$state) {
+                                if (! $state) {
                                     return;
                                 }
                                 $tpl = JobOpeningTemplate::find($state);
-                                if (!$tpl) {
+                                if (! $tpl) {
                                     return;
                                 }
                                 $set('postingTitle', $tpl->postingTitle);
@@ -120,9 +120,9 @@ class JobOpeningsResource extends Resource
                             ->options(config('recruit.job_opening.job_type_options'))
                             ->required(),
                         Select::make('RequiredSkill')
+                            ->label('Preferred Skills (internal)')
                             ->multiple()
-                            ->options(self::$requiredSkills)
-                            ->required(),
+                            ->options(self::$requiredSkills),
                         Select::make('WorkExperience')
                             ->options(config('recruit.job_opening.work_experience'))
                             ->required(),
