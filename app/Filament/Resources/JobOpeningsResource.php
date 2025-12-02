@@ -7,6 +7,7 @@ use App\Filament\Resources\JobOpeningsResource\Pages;
 use App\Filament\Resources\JobOpeningsResource\RelationManagers;
 use App\Models\Departments;
 use App\Models\JobOpenings;
+use App\Models\JobOpeningTemplate;
 use App\Models\User;
 use App\Settings\JobOpeningSettings;
 use Filament\Forms\Components\Checkbox;
@@ -53,6 +54,29 @@ class JobOpeningsResource extends Resource
                 Section::make('Job Opening Information')
                     ->icon('heroicon-o-briefcase')
                     ->schema([
+                        Select::make('template_id')
+                            ->label('Create from Template')
+                            ->native(false)
+                            ->options(JobOpeningTemplate::query()->pluck('name', 'id'))
+                            ->reactive()
+                            ->afterStateUpdated(function ($state, callable $set) {
+                                if (!$state) {
+                                    return;
+                                }
+                                $tpl = JobOpeningTemplate::find($state);
+                                if (!$tpl) {
+                                    return;
+                                }
+                                $set('postingTitle', $tpl->postingTitle);
+                                $set('JobTitle', $tpl->JobTitle);
+                                $set('Salary', $tpl->Salary);
+                                $set('RequiredSkill', $tpl->RequiredSkill ?? []);
+                                $set('WorkExperience', $tpl->WorkExperience);
+                                $set('JobDescription', $tpl->JobDescription);
+                                $set('JobRequirement', $tpl->JobRequirement);
+                                $set('JobBenefits', $tpl->JobBenefits);
+                                $set('AdditionalNotes', $tpl->AdditionalNotes);
+                            }),
                         TextInput::make('postingTitle')
                             ->maxLength(225)
                             ->required(),
@@ -145,6 +169,22 @@ class JobOpeningsResource extends Resource
                             ->directory('job-openings')
                             ->visibility('public')
                             ->maxSize(4096),
+                        Checkbox::make('save_as_template')
+                            ->label('Save this opening as a template')
+                            ->reactive(),
+                        TextInput::make('template_name')
+                            ->label('Template Name')
+                            ->maxLength(255)
+                            ->visible(fn (callable $get) => (bool) $get('save_as_template')),
+                        Select::make('template_state')
+                            ->label('Template State')
+                            ->options([
+                                'VIC' => 'Victoria',
+                                'NSW' => 'New South Wales',
+                                'QLD' => 'Queensland',
+                            ])
+                            ->native(false)
+                            ->visible(fn (callable $get) => (bool) $get('save_as_template')),
                     ])->columns(1),
                 Section::make('System Information')
                     ->hiddenOn(['create', 'edit'])
