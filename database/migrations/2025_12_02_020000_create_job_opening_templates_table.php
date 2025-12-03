@@ -35,4 +35,3 @@ return new class extends Migration
         Schema::dropIfExists('job_opening_templates');
     }
 };
-

@@ -9,4 +9,3 @@ class ListJobOpeningTemplates extends ListRecords
 {
     protected static string $resource = JobOpeningTemplateResource::class;
 }
-

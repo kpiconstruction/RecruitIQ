@@ -9,4 +9,3 @@ class EditJobOpeningTemplate extends EditRecord
 {
     protected static string $resource = JobOpeningTemplateResource::class;
 }
-

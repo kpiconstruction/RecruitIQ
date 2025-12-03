@@ -14,7 +14,7 @@ class CreateJobOpenings extends CreateRecord
     {
         $data['Status'] = 'New';
 
-        if (!empty($data['save_as_template']) && !empty($data['template_name']) && !empty($data['template_state'])) {
+        if (! empty($data['save_as_template']) && ! empty($data['template_name']) && ! empty($data['template_state'])) {
             JobOpeningTemplate::create([
                 'name' => $data['template_name'],
                 'state' => $data['template_state'],

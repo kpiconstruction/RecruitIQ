@@ -5,10 +5,14 @@ namespace App\Livewire;
 use AbanoubNassem\FilamentGRecaptchaField\Forms\Components\GRecaptcha;
 use Afatmustafa\FilamentTurnstile\Forms\Components\Turnstile;
 use App\Filament\Enums\JobCandidateStatus;
+use App\Models\ApplicantCompetency;
 use App\Models\Candidates;
+use App\Models\CompetencyType;
 use App\Models\JobCandidates;
 use App\Models\JobOpenings;
+use App\Models\JobRole;
 use App\Models\Referrals;
+use App\Models\RoleCompetencyRequirement;
 use DominionSolutions\FilamentCaptcha\Forms\Components\Captcha;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
@@ -215,6 +219,55 @@ class CareerApplyJob extends Component implements HasActions, HasForms
                         'KnownPeriod' => $ref['known_period'] ?? null,
                         'Notes' => trim(((($ref['organisation'] ?? '') !== '' ? ($ref['organisation'].'; ') : '')).(($ref['position'] ?? '') !== '' ? ('Pos: '.$ref['position'].'; ') : '').(($ref['phone_type'] ?? '') !== '' ? ('Type: '.$ref['phone_type'].'; ') : '').(($ref['phone'] ?? '') !== '' ? ('Phone: '.$ref['phone'].'; ') : '').(($ref['email'] ?? '') !== '' ? ('Email: '.$ref['email']) : '')),
                     ]);
+                }
+            }
+            // Role-driven competencies: ensure records exist
+            $role = $this->findRoleForJobOpening();
+            if ($role) {
+                $requirements = RoleCompetencyRequirement::where('role_id', $role->id)->get();
+                foreach ($requirements as $req) {
+                    ApplicantCompetency::firstOrCreate(
+                        [
+                            'applicant_id' => $candidate->id,
+                            'competency_type_id' => $req->competency_type_id,
+                        ],
+                        [
+                            'source' => $req->is_required ? \App\Enums\ApplicantCompetencySource::ROLE_REQUIRED : \App\Enums\ApplicantCompetencySource::ROLE_OPTIONAL,
+                            'sync_allowed' => true,
+                            'status' => \App\Enums\ApplicantCompetencyStatus::PENDING_VERIFICATION,
+                        ]
+                    );
+                }
+            }
+
+            // Persist all competencies from UI (role-driven prepopulated and applicant-added)
+            if (! empty($data['ApplicantCompetencies']) && is_array($data['ApplicantCompetencies'])) {
+                foreach ($data['ApplicantCompetencies'] as $comp) {
+                    $source = $comp['source'] ?? 'APPLICANT_ADDED';
+                    $syncAllowed = false;
+                    $typeId = $comp['competency_type_id'] ?? null;
+                    if ($typeId) {
+                        $type = CompetencyType::find($typeId);
+                        $syncAllowed = $type && $type->assignar_competency_id ? true : $syncAllowed;
+                    }
+
+                    ApplicantCompetency::updateOrCreate(
+                        [
+                            'applicant_id' => $candidate->id,
+                            'competency_type_id' => $typeId,
+                        ],
+                        [
+                            'source' => $source,
+                            'sync_allowed' => $syncAllowed,
+                            'status' => \App\Enums\ApplicantCompetencyStatus::PENDING_VERIFICATION,
+                            'issue_date' => $comp['issue_date'] ?? null,
+                            'completion_date' => $comp['completion_date'] ?? null,
+                            'reference_number' => $comp['reference_number'] ?? null,
+                            'front_image' => $comp['front_image'] ?? null,
+                            'back_image' => $comp['back_image'] ?? null,
+                            'notes' => $comp['notes'] ?? null,
+                        ]
+                    );
                 }
             }
             Notification::make()
@@ -518,6 +571,44 @@ class CareerApplyJob extends Component implements HasActions, HasForms
                             ])
                             ->label('Written References (optional)'),
                     ]),
+                Forms\Components\Section::make('Competencies')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\Repeater::make('ApplicantCompetencies')
+                            ->label('Add any licences, tickets or training (optional)')
+                            ->default(fn () => $this->roleDrivenDefaultCompetencies())
+                            ->schema([
+                                Forms\Components\Select::make('competency_type_id')
+                                    ->label('Competency')
+                                    ->options(fn () => CompetencyType::query()->where('active', true)->pluck('name', 'id')->toArray())
+                                    ->searchable()
+                                    ->preload()
+                                    ->nullable(),
+                                Forms\Components\DatePicker::make('issue_date')->label('Issue Date'),
+                                Forms\Components\DatePicker::make('completion_date')->label('Completion Date'),
+                                Forms\Components\TextInput::make('reference_number')
+                                    ->label(fn (callable $get) => optional(CompetencyType::find($get('competency_type_id')))->licence_number_label ?? 'Reference Number'),
+                                Forms\Components\FileUpload::make('front_image')
+                                    ->preserveFilenames()
+                                    ->directory('ApplicantCompetency-attachments')
+                                    ->visibility('private')
+                                    ->openable()
+                                    ->downloadable()
+                                    ->previewable(),
+                                Forms\Components\FileUpload::make('back_image')
+                                    ->preserveFilenames()
+                                    ->directory('ApplicantCompetency-attachments')
+                                    ->visibility('private')
+                                    ->openable()
+                                    ->downloadable()
+                                    ->previewable(),
+                                Forms\Components\Textarea::make('notes')->label('Notes'),
+                                Forms\Components\Hidden::make('source')->default('APPLICANT_ADDED'),
+                            ])
+                            ->columns(2)
+                            ->addActionLabel('Add Competency')
+                            ->deletable(true),
+                    ]),
                 Forms\Components\Section::make('Section 7 - Criminal History')
                     ->columns(2)
                     ->schema([
@@ -671,6 +762,39 @@ MD),
 
         return [];
 
+    }
+
+    private function findRoleForJobOpening(): ?JobRole
+    {
+        $state = $this->record->State ?? $this->record->state ?? null;
+        $names = array_filter([
+            self::$jobDetails?->JobTitle ?? null,
+            self::$jobDetails?->postingTitle ?? null,
+            $this->record->JobTitle ?? null,
+            $this->record->postingTitle ?? null,
+        ]);
+
+        return JobRole::query()
+            ->when($state, fn ($q) => $q->where('state', $state))
+            ->whereIn('name', $names)
+            ->first();
+    }
+
+    private function roleDrivenDefaultCompetencies(): array
+    {
+        $role = $this->findRoleForJobOpening();
+        if (! $role) {
+            return [];
+        }
+        $requirements = RoleCompetencyRequirement::where('role_id', $role->id)->get();
+
+        return $requirements->map(function ($req) {
+            return [
+                'competency_type_id' => $req->competency_type_id,
+                'source' => $req->is_required ? 'ROLE_REQUIRED' : 'ROLE_OPTIONAL',
+                'notes' => null,
+            ];
+        })->values()->toArray();
     }
 
     #[Title('Apply Job ')]

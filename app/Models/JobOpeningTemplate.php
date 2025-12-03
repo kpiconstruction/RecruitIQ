@@ -35,4 +35,3 @@ class JobOpeningTemplate extends Model
         'qualifications' => 'array',
     ];
 }
-
