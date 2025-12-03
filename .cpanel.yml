@@ -2,8 +2,13 @@ deployment:
   tasks:
     - export APPROOT=/home/act/repo/RecruitIQ
     - export DEPLOYPATH=/home/act/public_html/recruitiq.automatedconetruck.com.au
-    - /usr/bin/rsync -a --delete "$APPROOT/public/" "$DEPLOYPATH/"
-    - /usr/bin/php "$APPROOT/artisan" optimize:clear
-    - /usr/bin/php "$APPROOT/artisan" config:cache
-    - /usr/bin/php "$APPROOT/artisan" route:cache
-    - /usr/bin/php "$APPROOT/artisan" view:clear
+    - COMPOSER=$(command -v composer || echo /usr/bin/composer)
+    - PHP=$(command -v php || echo /usr/local/bin/php)
+    - RSYNC=$(command -v rsync || echo /usr/bin/rsync)
+    - $COMPOSER install --no-dev -o -d "$APPROOT"
+    - $PHP "$APPROOT/artisan" migrate --force
+    - $PHP "$APPROOT/artisan" optimize:clear
+    - $PHP "$APPROOT/artisan" config:cache
+    - $PHP "$APPROOT/artisan" route:cache
+    - $PHP "$APPROOT/artisan" view:clear
+    - $RSYNC -a --delete "$APPROOT/public/" "$DEPLOYPATH/"

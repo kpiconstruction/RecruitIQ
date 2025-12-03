@@ -9,10 +9,10 @@ use App\Models\CompetencyType;
 use App\Models\JobOpenings;
 use App\Models\JobRole;
 use App\Models\RoleCompetencyRequirement;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
@@ -138,4 +138,3 @@ it('role/state enforcement blocks mismatch', function () {
     $type = CompetencyType::create(['name' => 'Type', 'state' => 'NSW', 'active' => true]);
     RoleCompetencyRequirement::create(['role_id' => $role->id, 'competency_type_id' => $type->id, 'is_required' => true]);
 })->throws(InvalidArgumentException::class);
-
